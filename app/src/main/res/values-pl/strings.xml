@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IDEOapp</string>
-    <string name="show_weather_by_city">Pokaż prognozę pogody</string>
+    <string name="show_weather_by_city">Sprawdź przez podanie lokalizacji</string>
     <string name="title_activity_check_weather">CheckWeatherActivity</string>
     <string name="start">Start</string>
     <string name="addFavourite">Dodaj lokalizację do ulubionych</string>
@@ -12,4 +12,21 @@
     <string name="location_added">Lokalizacja została dodana do ulubionych.</string>
     <string name="location">Lokalizacja</string>
     <string name="weather_api_id">dc024d65cbbe45a60808edc20edeb342</string>
+    <string name="back_to_home">Wróć na stronę główną</string>
+    <string name="city_not_found">Miasto nie znalezione</string>
+    <string name="went_wrong_sorry">Coś poszło nie tak. Spróbuj ponownie później</string>
+    <string name="pressure">Ciśnienie: </string>
+    <string name="wind_speed">Prędkość wiatru: </string>
+    <string name="humidity">Wilgotność: </string>
+    <string name="temperature">Temperatura: </string>
+    <string name="unable_to_trace">Nie można odnaleźć twojej lokalizacji</string>
+    <string name="turn_on_gps">Włącz dane lokalizacyjne</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="pick_language">Wybierz język:</string>
+    <string name="pick_unit">Wybierz jednostkę temperatury:</string>
+    <string name="home_screen">Strona główna</string>
+    <string name="check_forecast">Sprawdź prognozę pogody na kolejne 5 dni</string>
+    <string name="show_weather_by_coords">Sprawdź przez twoją lokalizacje</string>
+    <string name="or">Lub</string>
 </resources>
