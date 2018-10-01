@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">IDEOapp</string>
+    <string name="show_weather_by_city">Check by location name</string>
+    <string name="title_activity_check_weather">CheckWeatherActivity</string>
+    <string name="start">Start</string>
+    <string name="addFavourite">Add location to favourites</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="enter_city">You should enter a name of city.</string>
+    <string name="location_added">Location added to favourities.</string>
+    <string name="location">Location</string>
+    <string name="weather_api_id">dc024d65cbbe45a60808edc20edeb342</string>
+    <string name="back_to_home">Back to HOME</string>
+    <string name="city_not_found">City not found</string>
+    <string name="went_wrong_sorry">Something went wrong, Try later again.</string>
+    <string name="pressure">Pressure: </string>
+    <string name="wind_speed">Wind speed: </string>
+    <string name="humidity">Humidity: </string>
+    <string name="temperature">Temperature: </string>
+    <string name="unable_to_trace">Unable to Trace your location</string>
+    <string name="turn_on_gps">Please Turn ON your GPS Connection</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="pick_language">Pick your language:</string>
+    <string name="pick_unit">Pick temperature unit:</string>
+    <string name="home_screen">Home screen</string>
+    <string name="check_forecast">Check forecast for next 5 days</string>
+    <string name="show_weather_by_coords">Check by your location</string>
+    <string name="or">Or</string>
+</resources>

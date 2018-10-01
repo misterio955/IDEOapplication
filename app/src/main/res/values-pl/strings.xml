@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IDEOapp</string>
+    <string name="show_weather_by_city">Pokaż prognozę pogody</string>
+    <string name="title_activity_check_weather">CheckWeatherActivity</string>
+    <string name="start">Start</string>
+    <string name="addFavourite">Dodaj lokalizację do ulubionych</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="celsius">Celsjusz</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="enter_city">Wprowadz nazwe miasta</string>
+    <string name="location_added">Lokalizacja została dodana do ulubionych.</string>
+    <string name="location">Lokalizacja</string>
+    <string name="weather_api_id">dc024d65cbbe45a60808edc20edeb342</string>
+</resources>

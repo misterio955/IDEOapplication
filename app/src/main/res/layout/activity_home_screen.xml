@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.HomeScreenActivity"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_screen"
+        android:textSize="25sp"/>
+
+    <RelativeLayout android:layout_height="170dp"
+        android:layout_width="220dp"
+        android:layout_centerInParent="true"
+        android:background="@color/colorLightGrey"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_alignParentTop="true"
+            android:id="@+id/pickLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_language"
+            android:textSize="17sp"/>
+
+        <ToggleButton
+            android:id="@+id/changeLanguage"
+            android:layout_alignEnd="@id/pickLanguage"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/english_flag"
+            android:textOff=""
+            android:textOn="" />
+
+        <TextView
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:id="@+id/pickUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/pick_unit"
+            android:textSize="17sp"/>
+
+        <Spinner
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:id="@+id/changeUnit"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pickUnit"
+            android:background="#AAAA88"
+            android:spinnerMode="dropdown" />
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:background="@color/colorButton"
+            android:text="@string/start" />
+    </RelativeLayout>
+</RelativeLayout>

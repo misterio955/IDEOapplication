@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/locDataTime"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@color/colorDarkGrey"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="@string/temperature" />
+
+    <TextView
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/locTemp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/locDataTime"
+        android:background="@color/colorDarkGrey"
+        android:textColor="@color/colorWhite"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/locPressure"
+        android:layout_below="@+id/locTemp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@color/colorLightGrey"
+        android:gravity="center"
+        android:text="@string/pressure" />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/locWindSpeed"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/locPressure"
+        android:background="@color/colorLightGrey"
+        android:gravity="center"
+        android:text="@string/wind_speed" />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/locHumidity"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/locWindSpeed"
+        android:background="@color/colorLightGrey"
+        android:gravity="center"
+        android:text="@string/humidity" />
+
+</RelativeLayout>
