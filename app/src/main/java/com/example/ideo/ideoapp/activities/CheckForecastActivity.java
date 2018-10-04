@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -125,16 +126,16 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
 
         checkButtonByCoords.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    buildAlertMessageNoGps();
+             //   locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+             //   if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+              //      buildAlertMessageNoGps();
 
-                } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    getLocation();
+              //  } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+              //      getLocation();
                     String apiID = getResources().getString(R.string.weather_api_id);
 
                     new WeatherRequest(listener, lattitude, longitude, apiID).execute();
-                }
+               // }
             }
         });
 
@@ -207,7 +208,6 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
     @Override
     public void onGetting(forecastStatus getStatus) {
         switch (getStatus) {
-            case GETTING_FORECAST_STARTED:
             case GETTING_FORECAST_SUCCESS:
                 startActivity(new Intent(getBaseContext(), WeatherViewActivity.class));
                 break;

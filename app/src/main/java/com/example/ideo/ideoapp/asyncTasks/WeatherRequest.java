@@ -1,6 +1,7 @@
 package com.example.ideo.ideoapp.asyncTasks;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.ideo.ideoapp.interfaces.OnWeatherRequestListener;
 import com.example.ideo.ideoapp.models.Weather;
@@ -13,9 +14,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.example.ideo.ideoapp.interfaces.OnWeatherRequestListener.forecastStatus.*;
 
@@ -28,6 +35,7 @@ public class WeatherRequest extends AsyncTask<String, Object, Object> implements
     private double latitude;
     private double longitude;
     private boolean checkByName;
+    forecastStatus status = GETTING_FORECAST_SUCCESS;
 
     public WeatherRequest(OnWeatherRequestListener onWeatherRequestListener, String cityName, String appID) {
         this.onWeatherRequestListener = onWeatherRequestListener;
@@ -48,43 +56,54 @@ public class WeatherRequest extends AsyncTask<String, Object, Object> implements
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        weatherList = new ArrayList<>();
         onWeatherRequestListener.onGetting(GETTING_FORECAST_STARTED);
+        weatherList = new ArrayList<>();
     }
 
     @Override
     protected Object doInBackground(String... code) {
-        HttpURLConnection conn;
-        URL connURL;
-        try {
-            if (checkByName) {
-                connURL = new URL("http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + appID);
-            } else {
-                connURL = new URL("http://api.openweathermap.org/data/2.5/forecast?lat="
-                        + latitude + "&lon=" + longitude + "&appid=" + appID);
-            }
-            conn = (HttpURLConnection) connURL.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(10000);
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            switch (conn.getResponseCode()) {
-                case 200:
-                    JSONObject JSON = new JSONObject(getResponseString(conn));
-                    makeListFromJSON(JSON);
-                    return GETTING_FORECAST_SUCCESS;
-                case 404:
-                    return CITY_NOT_FOUND;
-                default:
-                    return GETTING_FORECAST_FAILURE;
-            }
-        } catch (
-                Exception e)
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.openweathermap.org/data/2.5/forecast").newBuilder();
+        urlBuilder.addQueryParameter("q", "warsaw");
+        urlBuilder.addQueryParameter("appid", "dc024d65cbbe45a60808edc20edeb342");
+        String url = urlBuilder.build().toString();
 
-        {
-            e.printStackTrace();
-            return GETTING_FORECAST_FAILURE;
-        }
+        Log.e("aaa", url);
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                status = GETTING_FORECAST_FAILURE;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                switch (response.code()) {
+                    case 200:
+                        try {
+                            String myResponse = response.body().string();
+                            makeListFromJSON(new JSONObject(myResponse));
+                            Log.e("aaa", response.code() + weatherList.toString());
+                            status = GETTING_FORECAST_SUCCESS;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    case 404:
+                        status = CITY_NOT_FOUND;
+                    default:
+                        status = GETTING_FORECAST_FAILURE;
+
+                }
+            }
+        });
+        Log.e("aaa", status.toString());
+        return status;
+
     }
 
     @Override
@@ -131,7 +150,6 @@ public class WeatherRequest extends AsyncTask<String, Object, Object> implements
             e1.printStackTrace();
         }
     }
-
 
     @Override
     public void onGetting(forecastStatus getStatus) {
