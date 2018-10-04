@@ -1,6 +1,9 @@
 package com.example.ideo.ideoapp.Utils;
 
+import android.app.Activity;
+
 import com.example.ideo.ideoapp.models.Weather;
+import com.tapadoo.alerter.Alert;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,17 +52,17 @@ public class Utils {
 
         if (hasCoords) {
             String[] coords = value.split(spliting);
-            if (coords.length != 2) hasCoords = false;
+            if (coords.length != 2 ) hasCoords = false;
 
             else {
-                if (!coords[0].matches("[0-9.]*") || !coords[1].matches("[0-9.]*"))
+                if (!coords[0].matches("[0-9.]*") || coords[0].equals("0")
+                    || !coords[1].matches("[0-9.]*") || coords[1].equals("0"))
                     hasCoords = false;
             }
         }
 
         return hasCoords;
     }
-
 
     public static String[] splitCoords(String coords) {
         String spliting = "";

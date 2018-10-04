@@ -24,6 +24,7 @@ public class WeatherViewActivity extends AppCompatActivity {
     private Button homeButton;
     private ViewPager viewPager;
     private List<Weather> weathers;
+    private TextView transparent;
     private TextView locName;
     private TextView locCoords;
     private int unitTemp;
@@ -32,14 +33,20 @@ public class WeatherViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_view);
+        transparent = findViewById(R.id.transparent);
         viewPager = findViewById(R.id.viewPager);
         homeButton = findViewById(R.id.backToHome);
         locName = findViewById(R.id.locName);
         locCoords = findViewById(R.id.locCoords);
         whatUnit();
         weathers = CheckForecastActivity.getWeatherList();
-        Log.e("aaa1", weathers.toString());
-        viewPager.setAdapter(new CustomPagerAdapter(this, weathers, unitTemp));
+        if (weathers.size() == 0) {
+            transparent.setVisibility(View.VISIBLE);
+            locName.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+        } else viewPager.setAdapter(new CustomPagerAdapter(this, weathers, unitTemp));
+
+
         setClicks();
         setTextValues();
     }

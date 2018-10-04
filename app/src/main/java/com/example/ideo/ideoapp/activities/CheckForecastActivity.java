@@ -24,8 +24,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ideo.ideoapp.R;
+import com.example.ideo.ideoapp.Utils.CustomAlerter;
 import com.example.ideo.ideoapp.Utils.Utils;
-import com.example.ideo.ideoapp.interfaces.OnWeatherRequestListener;
 import com.example.ideo.ideoapp.models.FavouriteLocation;
 import com.example.ideo.ideoapp.models.Weather;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tapadoo.alerter.Alert;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +42,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -49,7 +52,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class CheckForecastActivity extends AppCompatActivity implements OnWeatherRequestListener {
+public class CheckForecastActivity extends AppCompatActivity {
 
     private final int REQUEST_LOCATION = 10;
     private Button checkButtonByName;
@@ -57,12 +60,11 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
     private Button addFavButton;
     private AutoCompleteTextView locationName;
     List<FavouriteLocation> locationList;
-    List<String> dropdownList;
+    Set<String> dropdownList;
+    Alert alert;
 
-    private String[] coords;
+    private String[] coords = {"0","0"};
     private static List<Weather> weatherList;
-
-    OnWeatherRequestListener listener = this;
     LocationManager locationManager;
     DatabaseReference databaseLocations;
 
@@ -76,7 +78,7 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
         checkButtonByCoords = findViewById(R.id.checkButtonCoords);
         addFavButton = findViewById(R.id.addFavourite);
         locationName = findViewById(R.id.locationName);
-        dropdownList = new ArrayList<>();
+        dropdownList = new TreeSet<>();
         locationList = new ArrayList<>();
         setClicks();
         setAutoCompleteList();
@@ -106,8 +108,9 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
         dropdownList.clear();
         for (FavouriteLocation location : locationList)
             dropdownList.add(location.getNameLocation());
+        List<String> list = new ArrayList<> (dropdownList);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, dropdownList);
+                android.R.layout.simple_spinner_item, list);
         locationName.setAdapter(adapter);
         locationName.setThreshold(1);
     }
@@ -128,10 +131,10 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
             public void onClick(View v) {
                 String name = locationName.getText().toString().trim();
                 if (TextUtils.isEmpty(name))
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.enter_city), Toast.LENGTH_LONG).show();
+                    showAlert(getResources().getString(R.string.warning),getResources().getString(R.string.enter_city));
                 else {
                     String apiID = getResources().getString(R.string.weather_api_id);
-                    doRequest(name,apiID);
+                    requestGetForecast(name,apiID);
                 }
             }
         });
@@ -146,7 +149,7 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
                     getLocation();
                     String apiID = getResources().getString(R.string.weather_api_id);
                     String valueCoords = coords[0]+";"+coords[1];
-                    doRequest(valueCoords,apiID);
+                    requestGetForecast(valueCoords,apiID);
 
                 }
             }
@@ -158,7 +161,7 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
                 String name = locationName.getText().toString().trim();
 
                 if (TextUtils.isEmpty(name))
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.enter_city), Toast.LENGTH_LONG).show();
+                    showAlert(getResources().getString(R.string.warning),getResources().getString(R.string.enter_city));
                 else {
                     FavouriteLocation favLocation = new FavouriteLocation(id, name);
                     assert id != null;
@@ -194,7 +197,7 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
                 coords[1] = String.valueOf(location2.getLongitude());
 
             } else {
-                Toast.makeText(this, getResources().getString(R.string.unable_to_trace), Toast.LENGTH_SHORT).show();
+                showAlert(getResources().getString(R.string.warning),getResources().getString(R.string.unable_to_trace));
             }
         }
     }
@@ -218,23 +221,31 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
         alert.show();
     }
 
-    public void doRequest(String textValue, String appID) {
+    public void requestGetForecast(String textValue, String appID) {
         weatherList = new ArrayList<>();
+        String url;
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.openweathermap.org/data/2.5/forecast").newBuilder();
         if(Utils.stringHasCoords(textValue)){
-          //  Log.e("aaa", coords.toString());
             coords = Utils.splitCoords(textValue);
             urlBuilder.addQueryParameter("lat", String.valueOf(coords[0]));
             urlBuilder.addQueryParameter("lon", String.valueOf(coords[1]));
             urlBuilder.addQueryParameter("appid", appID);
-        }else {
-          //  Log.e("aaa","name" + coords.toString());
+            url = urlBuilder.build().toString();
+            makeConnection(url);
+            Log.e("aaa", url);
+        }else if (!Utils.stringHasCoords(textValue)) {
             urlBuilder.addQueryParameter("q", textValue);
             urlBuilder.addQueryParameter("appid", appID);
+            url = urlBuilder.build().toString();
+            makeConnection(url);
+            Log.e("aaa", url);
         }
+        else {
 
-        String url = urlBuilder.build().toString();
-        Log.e("aaa", url);
+        }
+    }
+
+    private void makeConnection(String url){
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -243,7 +254,7 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                // blad
+                showAlert("FAILURE3", "FAILURE");
             }
 
             @Override
@@ -255,40 +266,34 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
                             Utils.makeListFromJSON(new JSONObject(myResponse), weatherList);
                             Log.e("aaa", weatherList.toString());
                             startActivity(new Intent(getBaseContext(), WeatherViewActivity.class));
-                            //git
+                            break;
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            //blad
+                            showAlert("FAILURE1", "FAILURE");
                         }
 
                     case 404:
-                        //zle dane
+                        showAlert("CITY NOT FOUND", "FAILURE");
+                        break;
                     default:
-                        //blad
+                        showAlert("FAILURE2", "FAILURE");
+                        break;
                 }
             }
         });
     }
 
-    public static List<Weather> getWeatherList() {
-        return weatherList;
+    private void showAlert( final String title, final String content) {
+         alert = CustomAlerter.getAlerter(this, title, content, true, new Runnable() {
+            @Override
+            public void run() {
+                    alert.hide();
+            }
+        }).show();
     }
 
-    @Override
-    public void onGetting(forecastStatus getStatus) {
-        Log.e("aaa", getStatus.toString());
-        switch (getStatus) {
-            case GETTING_FORECAST_STARTED:
-            case GETTING_FORECAST_SUCCESS:
-                startActivity(new Intent(getBaseContext(), WeatherViewActivity.class));
-                break;
-            case CITY_NOT_FOUND:
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.city_not_found), Toast.LENGTH_LONG).show();
-                break;
-            case GETTING_FORECAST_FAILURE:
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.went_wrong_sorry), Toast.LENGTH_LONG).show();
-                break;
-        }
+    public static List<Weather> getWeatherList() {
+        return weatherList;
     }
 }
