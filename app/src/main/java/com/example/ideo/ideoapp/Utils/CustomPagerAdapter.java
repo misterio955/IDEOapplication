@@ -1,4 +1,4 @@
-package com.example.ideo.ideoapp.views;
+package com.example.ideo.ideoapp.Utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -55,7 +55,7 @@ public class CustomPagerAdapter extends PagerAdapter {
                 temperature = String.valueOf(weather.getTemp() - 273.15).substring(0, 4) + "°C";
                 break;
             case 1:
-                temperature = String.valueOf(weather.getTemp()).substring(0, 6) + "K";
+                temperature = String.valueOf(weather.getTemp()).substring(0, 5) + "K";
                 break;
             case 2:
                 temperature = String.valueOf((weather.getTemp() * 1.8) - 459.67).substring(0, 4) + "°F";

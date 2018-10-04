@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 import com.example.ideo.ideoapp.R;
 import com.example.ideo.ideoapp.asyncTasks.WeatherRequest;
 import com.example.ideo.ideoapp.models.Weather;
-import com.example.ideo.ideoapp.views.CustomPagerAdapter;
+import com.example.ideo.ideoapp.Utils.CustomPagerAdapter;
 
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class WeatherViewActivity extends AppCompatActivity {
         locName = findViewById(R.id.locName);
         locCoords = findViewById(R.id.locCoords);
         whatUnit();
-        weathers = WeatherRequest.getWeatherList();
+        weathers = CheckForecastActivity.getWeatherList();
+        Log.e("aaa1", weathers.toString());
         viewPager.setAdapter(new CustomPagerAdapter(this, weathers, unitTemp));
         setClicks();
         setTextValues();

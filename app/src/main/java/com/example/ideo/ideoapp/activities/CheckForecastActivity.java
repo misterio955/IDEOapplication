@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,18 +24,30 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ideo.ideoapp.R;
-import com.example.ideo.ideoapp.asyncTasks.WeatherRequest;
+import com.example.ideo.ideoapp.Utils.Utils;
 import com.example.ideo.ideoapp.interfaces.OnWeatherRequestListener;
 import com.example.ideo.ideoapp.models.FavouriteLocation;
+import com.example.ideo.ideoapp.models.Weather;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class CheckForecastActivity extends AppCompatActivity implements OnWeatherRequestListener {
 
@@ -46,8 +59,8 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
     List<FavouriteLocation> locationList;
     List<String> dropdownList;
 
-    private double lattitude;
-    private double longitude;
+    private String[] coords;
+    private static List<Weather> weatherList;
 
     OnWeatherRequestListener listener = this;
     LocationManager locationManager;
@@ -118,7 +131,7 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.enter_city), Toast.LENGTH_LONG).show();
                 else {
                     String apiID = getResources().getString(R.string.weather_api_id);
-                    new WeatherRequest(listener, name, apiID).execute();
+                    doRequest(name,apiID);
                 }
             }
         });
@@ -132,8 +145,9 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
                 } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     getLocation();
                     String apiID = getResources().getString(R.string.weather_api_id);
+                    String valueCoords = coords[0]+";"+coords[1];
+                    doRequest(valueCoords,apiID);
 
-                    new WeatherRequest(listener, lattitude, longitude, apiID).execute();
                 }
             }
         });
@@ -168,16 +182,16 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
             Location location2 = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
             if (location != null) {
-                lattitude = location.getLatitude();
-                longitude = location.getLongitude();
+                coords[0] = String.valueOf(location.getLatitude());
+                coords[1] = String.valueOf(location.getLongitude());
 
             } else if (location1 != null) {
-                lattitude = location1.getLatitude();
-                longitude = location1.getLongitude();
+                coords[0] = String.valueOf(location1.getLatitude());
+                coords[1] = String.valueOf(location1.getLongitude());
 
             } else if (location2 != null) {
-                lattitude = location2.getLatitude();
-                longitude = location2.getLongitude();
+                coords[0] = String.valueOf(location2.getLatitude());
+                coords[1] = String.valueOf(location2.getLongitude());
 
             } else {
                 Toast.makeText(this, getResources().getString(R.string.unable_to_trace), Toast.LENGTH_SHORT).show();
@@ -204,8 +218,66 @@ public class CheckForecastActivity extends AppCompatActivity implements OnWeathe
         alert.show();
     }
 
+    public void doRequest(String textValue, String appID) {
+        weatherList = new ArrayList<>();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.openweathermap.org/data/2.5/forecast").newBuilder();
+        if(Utils.stringHasCoords(textValue)){
+          //  Log.e("aaa", coords.toString());
+            coords = Utils.splitCoords(textValue);
+            urlBuilder.addQueryParameter("lat", String.valueOf(coords[0]));
+            urlBuilder.addQueryParameter("lon", String.valueOf(coords[1]));
+            urlBuilder.addQueryParameter("appid", appID);
+        }else {
+          //  Log.e("aaa","name" + coords.toString());
+            urlBuilder.addQueryParameter("q", textValue);
+            urlBuilder.addQueryParameter("appid", appID);
+        }
+
+        String url = urlBuilder.build().toString();
+        Log.e("aaa", url);
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // blad
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                switch (response.code()) {
+                    case 200:
+                        try {
+                            String myResponse = response.body().string();
+                            Utils.makeListFromJSON(new JSONObject(myResponse), weatherList);
+                            Log.e("aaa", weatherList.toString());
+                            startActivity(new Intent(getBaseContext(), WeatherViewActivity.class));
+                            //git
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            //blad
+                        }
+
+                    case 404:
+                        //zle dane
+                    default:
+                        //blad
+                }
+            }
+        });
+    }
+
+    public static List<Weather> getWeatherList() {
+        return weatherList;
+    }
+
     @Override
     public void onGetting(forecastStatus getStatus) {
+        Log.e("aaa", getStatus.toString());
         switch (getStatus) {
             case GETTING_FORECAST_STARTED:
             case GETTING_FORECAST_SUCCESS:
