@@ -16,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -55,9 +54,9 @@ import okhttp3.Response;
 public class CheckForecastActivity extends AppCompatActivity {
 
     private final int REQUEST_LOCATION = 10;
-    private Button checkButtonByName;
-    private Button checkButtonByCoords;
-    private Button addFavButton;
+    public static Button checkButtonByName;
+    public static Button checkButtonByCoords;
+    public static Button addFavButton;
     private AutoCompleteTextView locationName;
     List<FavouriteLocation> locationList;
     Set<String> dropdownList;
@@ -246,6 +245,7 @@ public class CheckForecastActivity extends AppCompatActivity {
     }
 
     private void makeConnection(String url) {
+        setClickableButtons(false);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -254,7 +254,8 @@ public class CheckForecastActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                showAlert("FAILURE3", "FAILURE");
+                showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.went_wrong_sorry));
+                setClickableButtons(true);
             }
 
             @Override
@@ -265,18 +266,22 @@ public class CheckForecastActivity extends AppCompatActivity {
                             String myResponse = response.body().string();
                             Utils.makeListFromJSON(new JSONObject(myResponse), weatherList);
                             startActivity(new Intent(getBaseContext(), WeatherViewActivity.class));
+                            setClickableButtons(true);
                             break;
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            showAlert("FAILURE1", "FAILURE");
+                            showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.went_wrong_sorry));
+                            setClickableButtons(true);
                         }
 
                     case 404:
-                        showAlert("CITY NOT FOUND", "FAILURE");
+                        showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.city_not_found));
+                        setClickableButtons(true);
                         break;
                     default:
-                        showAlert("FAILURE2", "FAILURE");
+                        showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.went_wrong_sorry));
+                        setClickableButtons(true);
                         break;
                 }
             }
@@ -294,6 +299,12 @@ public class CheckForecastActivity extends AppCompatActivity {
 
     public static List<Weather> getWeatherList() {
         return weatherList;
+    }
+
+    public static void setClickableButtons(boolean value) {
+        checkButtonByName.setClickable(value);
+        checkButtonByCoords.setClickable(value);
+        addFavButton.setClickable(value);
     }
 
     @Override
