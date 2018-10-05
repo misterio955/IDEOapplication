@@ -12,12 +12,12 @@ public class CustomAlerter {
     public static Alerter getAlerter(final Activity activity, final String title, final String content, boolean swipeToDismiss, final Runnable onClick) {
         Alerter alerter = Alerter.create(activity);
         alerter
-                .setBackgroundColorRes(R.color.colorAccent)
-                .setProgressColorRes(R.color.colorAccent)
+                .setBackgroundColorRes(R.color.colorDarkGrey)
+                .setProgressColorRes(R.color.colorBackgroundDarker)
                 .setIcon(R.mipmap.ic_launcher)
                 .setIconColorFilter(0)
                 .enableVibration(true)
-                .setDuration(20000)
+                .setDuration(30000)
                 .setText(content)
                 .setTitle(title)
                 .setOnClickListener(new View.OnClickListener() {

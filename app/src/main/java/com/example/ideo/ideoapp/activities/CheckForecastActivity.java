@@ -61,9 +61,9 @@ public class CheckForecastActivity extends AppCompatActivity {
     private AutoCompleteTextView locationName;
     List<FavouriteLocation> locationList;
     Set<String> dropdownList;
-    Alert alert;
+    public static Alert alert;
 
-    private String[] coords = {"0","0"};
+    private String[] coords = {"0", "0"};
     private static List<Weather> weatherList;
     LocationManager locationManager;
     DatabaseReference databaseLocations;
@@ -108,7 +108,7 @@ public class CheckForecastActivity extends AppCompatActivity {
         dropdownList.clear();
         for (FavouriteLocation location : locationList)
             dropdownList.add(location.getNameLocation());
-        List<String> list = new ArrayList<> (dropdownList);
+        List<String> list = new ArrayList<>(dropdownList);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, list);
         locationName.setAdapter(adapter);
@@ -131,10 +131,11 @@ public class CheckForecastActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name = locationName.getText().toString().trim();
                 if (TextUtils.isEmpty(name))
-                    showAlert(getResources().getString(R.string.warning),getResources().getString(R.string.enter_city));
+                    showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.enter_city));
                 else {
                     String apiID = getResources().getString(R.string.weather_api_id);
-                    requestGetForecast(name,apiID);
+                    requestGetForecast(name, apiID);
+                    showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.uploading_data));
                 }
             }
         });
@@ -147,10 +148,6 @@ public class CheckForecastActivity extends AppCompatActivity {
 
                 } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     getLocation();
-                    String apiID = getResources().getString(R.string.weather_api_id);
-                    String valueCoords = coords[0]+";"+coords[1];
-                    requestGetForecast(valueCoords,apiID);
-
                 }
             }
         });
@@ -161,7 +158,7 @@ public class CheckForecastActivity extends AppCompatActivity {
                 String name = locationName.getText().toString().trim();
 
                 if (TextUtils.isEmpty(name))
-                    showAlert(getResources().getString(R.string.warning),getResources().getString(R.string.enter_city));
+                    showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.enter_city));
                 else {
                     FavouriteLocation favLocation = new FavouriteLocation(id, name);
                     assert id != null;
@@ -197,10 +194,16 @@ public class CheckForecastActivity extends AppCompatActivity {
                 coords[1] = String.valueOf(location2.getLongitude());
 
             } else {
-                showAlert(getResources().getString(R.string.warning),getResources().getString(R.string.unable_to_trace));
+                showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.unable_to_trace));
             }
+
+            String apiID = getResources().getString(R.string.weather_api_id);
+            String valueCoords = coords[0] + "," + coords[1];
+            showAlert(getResources().getString(R.string.warning), getResources().getString(R.string.uploading_data));
+            requestGetForecast(valueCoords, apiID);
         }
     }
+
 
     protected void buildAlertMessageNoGps() {
 
@@ -225,27 +228,24 @@ public class CheckForecastActivity extends AppCompatActivity {
         weatherList = new ArrayList<>();
         String url;
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.openweathermap.org/data/2.5/forecast").newBuilder();
-        if(Utils.stringHasCoords(textValue)){
+        if (Utils.stringHasCoords(textValue)) {
             coords = Utils.splitCoords(textValue);
             urlBuilder.addQueryParameter("lat", String.valueOf(coords[0]));
             urlBuilder.addQueryParameter("lon", String.valueOf(coords[1]));
             urlBuilder.addQueryParameter("appid", appID);
             url = urlBuilder.build().toString();
             makeConnection(url);
-            Log.e("aaa", url);
-        }else if (!Utils.stringHasCoords(textValue)) {
+        } else if (!Utils.stringHasCoords(textValue)) {
             urlBuilder.addQueryParameter("q", textValue);
             urlBuilder.addQueryParameter("appid", appID);
             url = urlBuilder.build().toString();
             makeConnection(url);
-            Log.e("aaa", url);
-        }
-        else {
+        } else {
 
         }
     }
 
-    private void makeConnection(String url){
+    private void makeConnection(String url) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -264,7 +264,6 @@ public class CheckForecastActivity extends AppCompatActivity {
                         try {
                             String myResponse = response.body().string();
                             Utils.makeListFromJSON(new JSONObject(myResponse), weatherList);
-                            Log.e("aaa", weatherList.toString());
                             startActivity(new Intent(getBaseContext(), WeatherViewActivity.class));
                             break;
 
@@ -284,16 +283,24 @@ public class CheckForecastActivity extends AppCompatActivity {
         });
     }
 
-    private void showAlert( final String title, final String content) {
-         alert = CustomAlerter.getAlerter(this, title, content, true, new Runnable() {
+    private void showAlert(final String title, final String content) {
+        alert = CustomAlerter.getAlerter(this, title, content, true, new Runnable() {
             @Override
             public void run() {
-                    alert.hide();
+                alert.hide();
             }
         }).show();
     }
 
     public static List<Weather> getWeatherList() {
         return weatherList;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        if (requestCode == REQUEST_LOCATION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            getLocation();
+        }
     }
 }

@@ -7,13 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ideo.ideoapp.R;
-import com.example.ideo.ideoapp.asyncTasks.WeatherRequest;
 import com.example.ideo.ideoapp.models.Weather;
 import com.example.ideo.ideoapp.Utils.CustomPagerAdapter;
 
@@ -25,6 +24,7 @@ public class WeatherViewActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private List<Weather> weathers;
     private TextView transparent;
+    private LinearLayout layout;
     private TextView locName;
     private TextView locCoords;
     private int unitTemp;
@@ -32,8 +32,10 @@ public class WeatherViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CheckForecastActivity.alert.hide();
         setContentView(R.layout.activity_weather_view);
         transparent = findViewById(R.id.transparent);
+        layout = findViewById(R.id.layout);
         viewPager = findViewById(R.id.viewPager);
         homeButton = findViewById(R.id.backToHome);
         locName = findViewById(R.id.locName);
@@ -42,10 +44,9 @@ public class WeatherViewActivity extends AppCompatActivity {
         weathers = CheckForecastActivity.getWeatherList();
         if (weathers.size() == 0) {
             transparent.setVisibility(View.VISIBLE);
-            locName.setVisibility(View.GONE);
-            viewPager.setVisibility(View.GONE);
+            layout.setVisibility(View.GONE);
+            homeButton.setVisibility(View.GONE);
         } else viewPager.setAdapter(new CustomPagerAdapter(this, weathers, unitTemp));
-
 
         setClicks();
         setTextValues();
@@ -70,9 +71,6 @@ public class WeatherViewActivity extends AppCompatActivity {
             lat = String.valueOf(weather.getLatitude());
             lon = String.valueOf(weather.getLongitude());
             break;
-            // nie wiem czemu nie moglem pobrac jednego elementu z listy
-            // przez np. get(0), wiec musialem zrobic w ten sposob
-
         }
         locName.setText(name);
         locCoords.setText("(" + lat + " ; " + lon + ")");

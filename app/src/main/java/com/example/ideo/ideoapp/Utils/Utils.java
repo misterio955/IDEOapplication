@@ -1,9 +1,5 @@
 package com.example.ideo.ideoapp.Utils;
-
-import android.app.Activity;
-
 import com.example.ideo.ideoapp.models.Weather;
-import com.tapadoo.alerter.Alert;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,37 +34,22 @@ public class Utils {
         }
     }
 
+    public static boolean stringHasCoords(String value){
+        String twoDoublesRegularExpression="99999";
+        if (value.contains(",")) twoDoublesRegularExpression = "-?[0-9][0-9]*(\\.[0-9]+)?,\\s*-?[0-9][0-9]*(\\.[0-9]+)?";
+        else if (value.contains(";")) twoDoublesRegularExpression = "-?[0-9][0-9]*(\\.[0-9]+)?;\\s*-?[0-9][0-9]*(\\.[0-9]+)?";
 
-    public static boolean stringHasCoords(String value) {
-        String spliting = "";
-        boolean hasCoords = true;
-        if (value.contains(",")) {
-            spliting = ",";
-        } else if (value.contains(";")) {
-            spliting = ";";
-        } else {
-            hasCoords = false;
-        }
-
-        if (hasCoords) {
-            String[] coords = value.split(spliting);
-            if (coords.length != 2 ) hasCoords = false;
-
-            else {
-                if (!coords[0].matches("[0-9.]*") || coords[0].equals("0")
-                    || !coords[1].matches("[0-9.]*") || coords[1].equals("0"))
-                    hasCoords = false;
-            }
-        }
-
-        return hasCoords;
+        if (value.matches(twoDoublesRegularExpression)) return true;
+        else return false;
     }
 
     public static String[] splitCoords(String coords) {
         String spliting = "";
         if (coords.contains(",")) spliting = ",";
         else if (coords.contains(";")) spliting = ";";
-
-        return coords.split(spliting);
+        String [] myCoords = coords.split(spliting);
+        myCoords[0] = myCoords[0].trim();
+        myCoords[1] = myCoords[1].trim();
+        return myCoords;
     }
 }

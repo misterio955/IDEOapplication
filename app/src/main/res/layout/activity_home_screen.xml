@@ -3,71 +3,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HomeScreenActivity"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    tools:context=".activities.HomeScreenActivity">
 
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="@string/home_screen"
-        android:textSize="25sp"/>
-
-    <RelativeLayout android:layout_height="170dp"
-        android:layout_width="220dp"
-        android:layout_centerInParent="true"
-        android:background="@color/colorLightGrey"
-        android:padding="10dp">
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
 
         <TextView
-            android:layout_alignParentTop="true"
-            android:id="@+id/pickLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pick_language"
-            android:textSize="17sp"/>
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_height="70dp"
+            android:background="@drawable/custom_dialog_title"
+            android:text="@string/home_screen"
+            android:textColor="@color/colorDarkGrey"
+            android:textAlignment="center"
+            android:textSize="20sp" />
 
-        <ToggleButton
-            android:id="@+id/changeLanguage"
-            android:layout_alignEnd="@id/pickLanguage"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/english_flag"
-            android:textOff=""
-            android:textOn="" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/rectangle_dark_background"
+            android:padding="10dp">
 
-        <TextView
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="30dp"
-            android:id="@+id/pickUnit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/pick_unit"
-            android:textSize="17sp"/>
+            <TextView
+                android:id="@+id/pickLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@string/pick_language"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp" />
 
-        <Spinner
-            android:layout_centerInParent="true"
-            android:layout_marginTop="8dp"
-            android:id="@+id/changeUnit"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/pickUnit"
-            android:background="#AAAA88"
-            android:spinnerMode="dropdown" />
+            <ToggleButton
+                android:id="@+id/changeLanguage"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignEnd="@id/pickLanguage"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/english_flag"
+                android:textOff=""
+                android:textOn="" />
 
-        <Button
-            android:layout_marginTop="10dp"
-            android:id="@+id/startButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:textSize="20sp"
-            android:background="@color/colorButton"
-            android:text="@string/start" />
-    </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/changeLanguage"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/pickUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="@string/pick_unit"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/changeUnit"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/pickUnit"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="13dp"
+                android:background="@color/colorLightGrey"
+                android:backgroundTint="@color/colorDarkGrey"
+                android:spinnerMode="dropdown" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/changeUnit"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rectangle_light_button"
+                android:text="@string/start"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

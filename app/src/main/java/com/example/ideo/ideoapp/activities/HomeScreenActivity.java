@@ -66,7 +66,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private void setChangeUnitSpinner() {
         String[] unitTempList = {getResources().getString(R.string.celsius), getResources().getString(R.string.kelvin), getResources().getString(R.string.fahrenheit)};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, unitTempList);
+                R.layout.spinner_item, unitTempList);
         changeUnit.setAdapter(adapter);
 
         sharedPreferences = getSharedPreferences("AppConfig", Context.MODE_PRIVATE);
