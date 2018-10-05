@@ -126,6 +126,10 @@ public class CheckForecastActivity extends AppCompatActivity {
     }
 
     private void setClicks() {
+        // String coords1 = "3.15,10.10";
+        // String coords2 = "53.95,10";
+        // String coords3 = "0.15,0.10";
+
         checkButtonByName.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String name = locationName.getText().toString().trim();
@@ -245,6 +249,7 @@ public class CheckForecastActivity extends AppCompatActivity {
     }
 
     private void makeConnection(String url) {
+
         setClickableButtons(false);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()

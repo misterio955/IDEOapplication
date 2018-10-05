@@ -54,8 +54,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@color/colorLightGrey"
+        android:background="@drawable/rectangle_light_button"
         android:gravity="center"
+        android:textColor="@color/colorBlack"
         android:text="@string/transparent"
         android:textSize="25sp"
         android:visibility="gone"/>
@@ -69,7 +70,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:background="@color/colorDarkGrey"
+        android:background="@drawable/rectangle_dark_button"
         android:textColor="@color/colorWhite"
         android:text="@string/back_to_home" />
 
