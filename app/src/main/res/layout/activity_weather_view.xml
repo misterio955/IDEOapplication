@@ -3,43 +3,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/colorBackgroundDarker"
     tools:context=".activities.WeatherViewActivity">
 
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:background="@drawable/custom_dialog_title">
+
+        <TextView
+            android:id="@+id/locName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/locCoords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locName"
+            android:layout_centerHorizontal="true"
+            android:gravity="center" />
+
+        <RelativeLayout
+            android:id="@+id/forecastView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-10dp"/>
+
+        </RelativeLayout>
+    </LinearLayout>
     <TextView
-        android:id="@+id/locName"
+        android:id="@+id/transparent"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="28sp"
+        android:layout_marginTop="30dp"
         android:background="@color/colorLightGrey"
-        android:gravity="center" />
-
-    <TextView
-        android:id="@+id/locCoords"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/locName"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorLightGrey"
-        android:gravity="center" />
-
-    <android.support.v4.view.ViewPager
-        android:layout_below="@id/locCoords"
-        android:id="@+id/viewPager"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="400dp">
-    </android.support.v4.view.ViewPager>
+        android:gravity="center"
+        android:text="@string/transparent"
+        android:textSize="25sp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/backToHome"
+        android:layout_below="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/viewPager"
+        android:padding="5dp"
         android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:background="@color/colorDarkGrey"
+        android:textColor="@color/colorWhite"
         android:text="@string/back_to_home" />
+
 </RelativeLayout>

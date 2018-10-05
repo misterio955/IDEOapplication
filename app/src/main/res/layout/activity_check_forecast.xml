@@ -6,71 +6,111 @@
     android:background="@color/colorBackground"
     tools:context=".activities.CheckForecastActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/check_forecast"
-        android:textSize="25sp" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="270dp"
         android:layout_centerInParent="true"
-        android:background="@color/colorLightGrey"
-        android:padding="20dp">
-
-        <AutoCompleteTextView
-            android:id="@+id/locationName"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@color/colorLightGrey"
-            android:hint="@string/location"
-            android:textSize="20sp" />
-
-        <Button
-            android:layout_marginTop="10dp"
-            android:id="@+id/addFavourite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/locationName"
-            android:layout_centerHorizontal="true"
-            android:background="@color/colorButton"
-            android:text="@string/addFavourite" />
-
-        <Button
-            android:id="@+id/checkButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/addFavourite"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/show_weather_by_city" />
+        android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/checkButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/or"
-            android:textSize="20sp" />
-
-
-        <Button
-            android:layout_marginTop="50dp"
-            android:id="@+id/checkButtonCoords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/checkButton"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/custom_dialog_title"
             android:gravity="center"
-            android:text="@string/show_weather_by_coords" />
-    </RelativeLayout>
+            android:padding="10dp"
+            android:text="@string/check_forecast"
+            android:textAlignment="center"
+            android:textColor="@color/colorDarkGrey"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/rectangle_dark_background"
+            android:padding="20dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/locationName"
+                android:layout_width="190dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorLightGrey"
+                android:hint="@string/location"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/addFavourite"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/rectangle_light_button"
+                android:padding="5dp"
+                android:text="@string/addFavourite"
+                android:textAlignment="center" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/addFavourite"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/checkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addFavourite"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rectangle_light_button"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/show_weather_by_city" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/checkButton"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/checkButton"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:text="@string/or"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/or"
+                android:layout_marginTop="2dp"
+                android:background="@color/colorWhite" />
+
+
+            <Button
+                android:id="@+id/checkButtonCoords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/checkButton"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/rectangle_light_button"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/show_weather_by_coords" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

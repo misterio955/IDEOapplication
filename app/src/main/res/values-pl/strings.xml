@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IDEOapp</string>
-    <string name="show_weather_by_city">Sprawdź przez podanie lokalizacji</string>
+    <string name="show_weather_by_city">Sprawdź pogodę</string>
     <string name="title_activity_check_weather">CheckWeatherActivity</string>
+    <string name="addFavourite">Dodaj</string>
     <string name="start">Start</string>
-    <string name="addFavourite">Dodaj lokalizację do ulubionych</string>
     <string name="kelvin">Kelvin</string>
     <string name="celsius">Celsjusz</string>
     <string name="fahrenheit">Fahrenheit</string>
@@ -29,4 +29,7 @@
     <string name="check_forecast">Sprawdź prognozę pogody na kolejne 5 dni</string>
     <string name="show_weather_by_coords">Sprawdź przez twoją lokalizacje</string>
     <string name="or">Lub</string>
+    <string name="warning">Uwaga!</string>
+    <string name="transparent">Nie mogliśmy znaleźć lokalizacji, spróbuj podać inne wartości.</string>
+    <string name="uploading_data">Przesyłanie danych...</string>
 </resources>

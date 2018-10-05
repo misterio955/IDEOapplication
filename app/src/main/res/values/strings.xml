@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">IDEOapp</string>
-    <string name="show_weather_by_city">Check by location name</string>
+    <string name="show_weather_by_city">Check forecast</string>
     <string name="title_activity_check_weather">CheckWeatherActivity</string>
     <string name="start">Start</string>
-    <string name="addFavourite">Add location to favourites</string>
+    <string name="addFavourite">Add</string>
     <string name="kelvin">Kelvin</string>
     <string name="celsius">Celsius</string>
     <string name="fahrenheit">Fahrenheit</string>
@@ -28,4 +28,7 @@
     <string name="check_forecast">Check forecast for next 5 days</string>
     <string name="show_weather_by_coords">Check by your location</string>
     <string name="or">Or</string>
+    <string name="warning">Warning!</string>
+    <string name="transparent">We could not find your city, try other values.</string>
+    <string name="uploading_data">Uploading data...</string>
 </resources>
